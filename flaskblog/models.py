@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     # below we create a default arg where we mention the default profile picture
-    image_file = db.Column(db.String(20), nullable=False, default='profile_pics/default.jpg')
+    image_file = db.Column(db.String(20), nullable=False, default='static/profile_pics/56c6632a3ab0abec.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
 
