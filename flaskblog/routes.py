@@ -10,11 +10,12 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
 @app.route("/home")
-@login_required
 def home():
+    numbers_sum=0
     posts = Post.query.all()
-    return render_template('home.html', posts=posts)
-
+    for post in posts:
+        numbers_sum = numbers_sum + post.numbers_issued
+    return render_template('home.html', posts=posts, numbers_sum=numbers_sum)
 
 @app.route("/about")
 def about():
@@ -59,7 +60,6 @@ def login():
             login_user(user=user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
-
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -111,12 +111,18 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(material_id=form.material_id.data,
+                    numbers_issued=form.numbers_issued.data,
+                    unit=form.unit.data,
+                    person=form.person.data,
+                    location=form.location.data,
+                    type_issued=form.type_issued.data,
+                    author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post', form=form, legend='Update Post')
+    return render_template('create_post.html', title='New Post', form=form, legend='New Post')
 
 
 @app.route("/post/<int:post_id>")

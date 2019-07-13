@@ -1,17 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
-        <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="#">
-                        {{ post.author.username }}</a>
-                    <small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
-                </div>
-                <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
-                <p class="article-content">{{ post.content }}</p>
-            </div>
-        </article>
-    {% endfor %}
-{% endblock content %}
+<p>{{ numbers_sum }}</p>
+{% for post in posts %}
+<article class="media content-section">
+  <!-- <img class="rounded-circle article-img " src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
+  <div class="media-body">
+    <div class="article-metadata">
+        <a class="mr-2 text-uppercase" href="#"> {{ post.material_id }}</a>
+        <small class="text-muted">{{ post.date_posted.strftime("%d/%-m/%-y, %-I:%M %p")}}</small>
+        <small class="font-weight-light text-success ml-1">{{ post.author.name }}</small>
+
+      </div>
+      <div class="container mr-1">
+        <div class="row">
+          <div class="col-1">
+            {{ post.numbers_issued }}
+          </div>
+          <div class="col-2">
+            {{ post.unit }}
+          </div>
+          <div class="col-3">
+            {{ post.person }}
+          </div>
+          <div class="col-3">
+            {{ post.location }}
+          </div>
+          <div class="col-1">
+            {{ post.type_issued }}
+          </div>
+        </div>
+      </div>
+
+
+      <!-- <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.type_issued }}</a></h2> -->
+      <!-- <p class="article-content">{{ post.location }}</p> -->
+    </div>
+  </article>
+  {% endfor %}
+  {% endblock content %}

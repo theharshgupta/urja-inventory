@@ -8,34 +8,34 @@
                     {{ legend }}
                 </legend>
                 <div class="form-group">
-                    {{ form.title.label(class="form-control-label") }}
-                    {% if form.title.errors %}
-                        {{ form.title(class="form-control form-control-lg is-invalid") }}
+                    {{ form.material_id.label(class="form-control-label") }}
+                    {% if form.material_id.errors %}
+                        {{ form.material_id(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.title.errors %}
+                            {% for error in form.material_id.errors %}
                                 <span>
                             {{ error }}
                             </span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.title(class="form-control form-control-lg") }}
+                        {{ form.material_id(class="form-control form-control-lg") }}
                     {% endif %}
 
                 </div>
                 <div class="form-group">
-                    {{ form.content.label(class="form-control-label") }}
-                    {% if form.content.errors %}
-                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                    {{ form.person.label(class="form-control-label") }}
+                    {% if form.person.errors %}
+                        {{ form.person(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.content.errors %}
+                            {% for error in form.person.errors %}
                                 <span>
                                 {{ error }}
                                 </span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.content(class="form-control form-control-lg") }}
+                        {{ form.person(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
             </fieldset>
