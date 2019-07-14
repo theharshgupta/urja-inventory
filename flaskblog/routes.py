@@ -15,22 +15,26 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
+    page = request.args.get('page', 1, type=int)
+    per_page=10
     form = SortDays()
-    posts = Post.query.order_by(desc(Post.date_posted))
-    if form.sort_days.data == '1':
-        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=1))).all()
-    elif form.sort_days.data == '7':
-        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(hours=5))).all()
-    elif form.sort_days.data == '30':
-        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=30))).all()
-    elif form.sort_days.data == '90':
-        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=90))).all()
-    elif form.sort_days.data == '360':
-        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=360))).all()
-    elif form.sort_days.data == 'All':
-        posts = posts.all()
 
-    return render_template('home.html', form=form, posts=posts)
+    posts = Post.query.order_by(desc(Post.date_posted))
+
+    if form.sort_days.data == '1':
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=1)))
+    elif form.sort_days.data == '7':
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(hours=2)))
+    elif form.sort_days.data == '30':
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=30)))
+    elif form.sort_days.data == '90':
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=90)))
+    elif form.sort_days.data == '360':
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=360)))
+    elif form.sort_days.data == 'All':
+        posts = Post.query.order_by(desc(Post.date_posted))
+
+    return render_template('home.html', form=form, posts=posts.paginate(page=page, per_page=per_page))
 
 @app.route("/about")
 def about():

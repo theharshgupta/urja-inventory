@@ -23,8 +23,8 @@
 </form>
 
 <!-- DISPLAY POSTS -->
-{% for post in posts %}
-<article class="media content-section">
+{% for post in posts.items %}
+  <article class="media content-section">
   <!-- <img class="rounded-circle article-img " src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
   <div class="media-body">
     <div class="article-metadata">
@@ -33,26 +33,39 @@
         <small class="font-weight-light text-success ml-1">{{ post.author.name }}</small>
 
       </div>
-      <div class="container mr-1">
+      <div class="container text-sm">
         <div class="row">
-          <div class="col-1">
+          <div class="col">
             {{ post.numbers_issued }}
           </div>
-          <div class="col-2">
+          <div class="col">
             {{ post.unit }}
           </div>
-          <div class="col-3">
+          <div class="col">
             {{ post.person }}
           </div>
-          <div class="col-3">
+          <div class="col">
             {{ post.location }}
           </div>
-          <div class="col-1">
-            {{ post.type_issued }}
+          <div class="col-3">
+            <small> {{ post.type_issued }}</small>
+
           </div>
         </div>
       </div>
     </div>
   </article>
-  {% endfor %}
+{% endfor %}
+{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+    {% if posts.page == page_num %}
+      <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{page_num}}</a>
+    {% else %}
+      <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{page_num}}</a>
+    {% endif %}
+  {% else %}
+    ...
+  {% endif %}
+{% endfor %}
+
   {% endblock content %}
