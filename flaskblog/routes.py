@@ -1,27 +1,30 @@
 from flask import render_template, url_for, flash, abort, redirect, request
 from flaskblog.models import User, Post
+from datetime import date, datetime
+from datetime import timedelta
 import secrets
 from PIL import Image
 import os
+from sqlalchemy import desc
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays
 from flaskblog import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
+
 
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     form = SortDays()
-    posts = Post.query.all()
-
+    posts = Post.query.order_by(desc(Post.date_posted))
     if form.sort_days.data == '7':
-        posts = [Post.query.get(1)]
-    if form.sort_days.data == 'All':
-        posts = Post.query.all()
-    if form.sort_days.data == '30':
-        posts = [Post.query.get(5)]
-
-
+        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(hours=5))).all()
+    elif form.sort_days.data == 'All':
+        posts = posts.order_by(desc(Post.date_posted)).all()
+    elif form.sort_days.data == '30':
+        posts = posts.all()
+    elif form.sort_days.data == '100':
+        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=100))).all()
 
     return render_template('home.html', form=form, posts=posts)
 

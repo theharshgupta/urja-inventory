@@ -2,7 +2,6 @@
 {% block content %}
 
 <form method="POST" action="">
-    <fieldset class="form-group">
         <div class="form-group">
             {{ form.sort_days.label(class="form-control-label")}}
             {% if form.sort_days.errors %}
@@ -15,10 +14,9 @@
                     {% endfor %}
                 </div>
             {% else %}
-                {{ form.sort_days(class="form-control form-control-lg") }}
+                {{ form.sort_days(class="form-control-sm") }}
             {% endif %}
         </div>
-    </fieldset>
     <div class="form-group">
         {{ form.submit(class="btn btn-outline-info") }}
     </div>

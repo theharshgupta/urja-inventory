@@ -62,5 +62,6 @@ class PostForm(FlaskForm):
 
 class SortDays(FlaskForm):
     # for some reason the value of tuples below has to be strings and not ints
-    sort_days = SelectField('Days', choices=[('All', 'All') ,('7', '7'), ('30', '30')])
+    sort_days = SelectField('Last Days', choices=[('All', 'All') ,('7', '7'),
+                                             ('30', '30'), ('100', '100')])
     submit = SubmitField('Search')
