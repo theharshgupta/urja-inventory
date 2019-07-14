@@ -1,11 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
+<!-- <div class="btn-group mb-5"> -->
+  <!-- Button 1 -->
+  <!-- <button type="button" class="btn btn-secondary dropdown-toggle mr-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+    <!-- Last 7 Days -->
+  <!-- </button> -->
+  <!-- <div class="dropdown-menu"> -->
+    <!-- <a class="dropdown-item" href="#">Last 7 Days</a> -->
+    <!-- <a class="dropdown-item" href="#">Last 30 Days</a> -->
+    <!-- <a class="dropdown-item" href="#">Last 360 Days</a> -->
+    <!-- <div class="dropdown-divider"></div> -->
+    <!-- <a class="dropdown-item" href="#">Separated link</a> -->
+  <!-- </div> -->
+<!-- </div> -->
+
 {% for post in posts %}
 <article class="media content-section">
   <!-- <img class="rounded-circle article-img " src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
   <div class="media-body">
     <div class="article-metadata">
-        <a class="mr-2 text-uppercase" href="{{ url_for('post', post_id=post.id) }}"> {{ post.material_id }}</a>
+        <a class="mr-2 text-uppercase font-weight-bold" href="{{ url_for('post', post_id=post.id) }}"> {{ post.material_id }}</a>
         <small class="text-muted">{{ post.date_posted.strftime("%d/%-m/%-y, %-I:%M %p")}}</small>
         <small class="font-weight-light text-success ml-1">{{ post.author.name }}</small>
 

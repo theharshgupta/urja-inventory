@@ -94,7 +94,7 @@
                     {% if form.type_issued.errors %}
                         {{ form.type_issued(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.type_issued.errors %}
+                            {% for error in form.type_issued.choices.errors %}
                                 <span>
                                 {{ error }}
                                 </span>

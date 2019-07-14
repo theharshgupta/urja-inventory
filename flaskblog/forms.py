@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User
 from flask_login import current_user
-
+from flaskblog.choices import CHOICES_TYPE_ISSUED, CHOICES_PERSON
 
 class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -55,7 +55,7 @@ class PostForm(FlaskForm):
     material_id = StringField('Material ID', validators=[DataRequired()])
     numbers_issued = IntegerField('Numbers', default=1, validators=[DataRequired()])
     unit = StringField('Unit', default='pcs')
-    person = StringField('Person')
-    location = StringField('Location', default='delhi')
-    type_issued = StringField('Type', default='lol')
+    person = SelectField('Person', choices=CHOICES_PERSON, validators=[DataRequired()])
+    location = StringField('Location', default='Delhi')
+    type_issued = SelectField('Type Issued', choices=CHOICES_TYPE_ISSUED)
     submit = SubmitField('Post')
