@@ -17,14 +17,18 @@ from flask_login import login_user, current_user, logout_user, login_required
 def home():
     form = SortDays()
     posts = Post.query.order_by(desc(Post.date_posted))
-    if form.sort_days.data == '7':
+    if form.sort_days.data == '1':
+        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=1))).all()
+    elif form.sort_days.data == '7':
         posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(hours=5))).all()
-    elif form.sort_days.data == 'All':
-        posts = posts.order_by(desc(Post.date_posted)).all()
     elif form.sort_days.data == '30':
+        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=30))).all()
+    elif form.sort_days.data == '90':
+        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=90))).all()
+    elif form.sort_days.data == '360':
+        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=360))).all()
+    elif form.sort_days.data == 'All':
         posts = posts.all()
-    elif form.sort_days.data == '100':
-        posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(days=100))).all()
 
     return render_template('home.html', form=form, posts=posts)
 
@@ -124,8 +128,8 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post', form=form,
-                            legend='New Post')
+    return render_template('create_post.html', title='New Entry', form=form,
+                            legend='New Entry')
 
 
 @app.route("/post/<int:post_id>")
@@ -163,7 +167,7 @@ def update_post(post_id):
         form.location.data = post.location
 
 
-    return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
+    return render_template('create_post.html', title='Update Entry', form=form, legend='Update Entry')
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
