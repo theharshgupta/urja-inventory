@@ -1,5 +1,6 @@
 from flask import render_template, url_for, flash, abort, redirect, request
 from flaskblog.models import User, Post
+import pygal
 from datetime import date, datetime
 from datetime import timedelta
 import secrets
@@ -16,7 +17,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     page = request.args.get('page', 1, type=int)
-    per_page=10
+    per_page=20
     form = SortDays()
 
     posts = Post.query.order_by(desc(Post.date_posted))
@@ -24,7 +25,7 @@ def home():
     if form.sort_days.data == '1':
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=1)))
     elif form.sort_days.data == '7':
-        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(hours=2)))
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(hours=5)))
     elif form.sort_days.data == '30':
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=30)))
     elif form.sort_days.data == '90':
@@ -39,7 +40,6 @@ def home():
 @app.route("/about")
 def about():
     text_about = """“Capital Urjatech Ltd, ISO 9001:2008 certified company is the leading electric cable manufacture of XLPE / PVC Insulated Aluminum Cables including Low Tension Power and Aerial Bunched Cable in India and subcontinent. "
-
 To accelerate the mission of electricity for all, we are determined to provide transmission cable required to power and empower next generation of India. As fast growing power equipment manufacturer, our mission is to help connect everyone with cheap electricity supply through an efficient and well maintained smart transmission grid network while maintaining low AT&C losses. With our moto of 'Delivering Best’, we work closely with all State Electricity Boards as well as Private electrification turnkey projects contractors to supply various sizes of transmission and service cable under various state and central government initiatives schemes"""
     return render_template('about.html', title='About', text_about=text_about)
 
@@ -184,3 +184,20 @@ def delete_post(post_id):
     db.session.commit()
     flash("Your post has been deleted", 'success')
     return redirect(url_for('home'))
+
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    try:
+        pie_chart = pygal.Pie()
+        pie_chart.title = 'Browser usage in February 2012 (in %)'
+        pie_chart.add('IE', 19.5)
+        pie_chart.add('Firefox', 36.6)
+        pie_chart.add('Chrome', 36.3)
+        pie_chart.add('Safari', 4.5)
+        pie_chart.add('Opera', 2.3)
+        graph_data = pie_chart.render_data_uri()
+        return render_template('graphing.html',graph_data=graph_data)
+    except Exception as e:
+        print(str(e))

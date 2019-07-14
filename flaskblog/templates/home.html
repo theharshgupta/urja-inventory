@@ -35,23 +35,23 @@
       </div>
       <div class="container text-sm">
         <div class="row">
-          <div class="col">
+          <div class="col-1">
             {{ post.numbers_issued }}
           </div>
-          <div class="col">
+          <div class="col-2">
             {{ post.unit }}
           </div>
           <div class="col">
             {{ post.person }}
           </div>
-          <div class="col">
-            {{ post.location }}
-          </div>
-          <div class="col-3">
-            <small> {{ post.type_issued }}</small>
-
-          </div>
+        <div class="col">
+          {{ post.location }}
         </div>
+        <div class="col">
+          <small> {{ post.type_issued }}</small>
+        </div>
+      </div>
+
       </div>
     </div>
   </article>

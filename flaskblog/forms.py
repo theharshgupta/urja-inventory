@@ -4,7 +4,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User
 from flask_login import current_user
-from flaskblog.choices import CHOICES_TYPE_ISSUED, CHOICES_PERSON
+from flaskblog.choices import CHOICES_TYPE_ISSUED, CHOICES_PERSON, CHOICES_LOCATION, CHOICES_MATERIALID, CHOICES_UNIT
 
 class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -52,12 +52,12 @@ class UpdateAccountForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    material_id = StringField('Material ID', validators=[DataRequired()])
+    material_id = SelectField('Material ID', validators=[DataRequired()], choices=[(x, x) for x in CHOICES_MATERIALID])
     numbers_issued = IntegerField('Numbers', default=1, validators=[DataRequired()])
-    unit = StringField('Unit', default='pcs')
+    unit = SelectField('Unit', default='pcs', choices=[(x, x) for x in CHOICES_UNIT])
     person = SelectField('Person', choices=CHOICES_PERSON, validators=[DataRequired()])
-    location = StringField('Location', default='Delhi')
-    type_issued = SelectField('Type Issued', choices=CHOICES_TYPE_ISSUED)
+    location = SelectField('Location/Machine', default='Delhi', choices=CHOICES_LOCATION)
+    type_issued = SelectField('Type Issued', default='CONSUMED', choices=CHOICES_TYPE_ISSUED)
     submit = SubmitField('Post')
 
 class SortDays(FlaskForm):
