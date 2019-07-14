@@ -3,30 +3,33 @@ from flaskblog.models import User, Post
 import secrets
 from PIL import Image
 import os
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays
 from flaskblog import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 
 
-@app.route("/")
-@app.route("/home")
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/home", methods=['GET', 'POST'])
 def home():
-    # numbers_sum=0
+    form = SortDays()
     posts = Post.query.all()
-    # for post in posts:
-        # numbers_sum = numbers_sum + post.numbers_issued
-    return render_template('home.html', posts=posts)
+
+    if form.sort_days.data == '7':
+        posts = [Post.query.get(1)]
+    if form.sort_days.data == 'All':
+        posts = Post.query.all()
+    if form.sort_days.data == '30':
+        posts = [Post.query.get(5)]
+
+
+
+    return render_template('home.html', form=form, posts=posts)
 
 @app.route("/about")
 def about():
-    # text_about_loc = url_for('static', filename='text/about.txt')
-    # print(text_about_loc)
-    # with open(text_about_loc, 'r') as f:
-    #     text_about = f.read()
-    text_about = """
-    If Led Zeppelin were the band most responsible for hard rock's vertical expansion in the '70s, hitting previously unforeseeable heights for the genre, Pink Floyd were the band that expanded it the most horizontally.
-Obviously, they stretched out the length -- double albums, side-long jams, songs that had more movements and ideas than entire LPs by other bands. But they also broadened the music's width, with one of the most far-reaching musical palettes of any band approaching their magnitude. Starting with the Syd Barrett-stewarded kaleidoscopic psychedelia Piper at the Gates of Dawn in 1967 -- a half-century old this Saturday (Aug. 5) -- the band showed a truly staggering artistic flexibility and open-eared inventiveness, for which they remain oddly underrated in an era that increasingly views them as stodgy, cerebral rock puritans.
-    """
+    text_about = """“Capital Urjatech Ltd, ISO 9001:2008 certified company is the leading electric cable manufacture of XLPE / PVC Insulated Aluminum Cables including Low Tension Power and Aerial Bunched Cable in India and subcontinent. "
+
+To accelerate the mission of electricity for all, we are determined to provide transmission cable required to power and empower next generation of India. As fast growing power equipment manufacturer, our mission is to help connect everyone with cheap electricity supply through an efficient and well maintained smart transmission grid network while maintaining low AT&C losses. With our moto of 'Delivering Best’, we work closely with all State Electricity Boards as well as Private electrification turnkey projects contractors to supply various sizes of transmission and service cable under various state and central government initiatives schemes"""
     return render_template('about.html', title='About', text_about=text_about)
 
 
