@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
     <article class="media content-section">
-        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+        <!-- <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="#">{{ post.author.username }}</a>
+                <a class="mr-2 text-uppercase font-weight-bold" href="#">{{ post.material_id }}</a>
                 <small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
+                <small class="ml-2 text-success">{{ post.author.name }}</small>
                 {% if post.author == current_user %}
                     <div>
                         <a href="{{ url_for('update_post', post_id=post.id) }}" class="btn btn-secondary btn-sm mb-2 mt-2">Update</a>
@@ -13,8 +14,29 @@
                     </div>
                 {% endif %}
             </div>
-            <h2 class="article-title">{{ post.title }}</h2>
-            <p class="article-content">{{ post.content }}</p>
+            <div class="container mr-1">
+              <div class="row">
+                <div class="col-1">
+                  {{ post.numbers_issued }}
+                </div>
+                <div class="col-2">
+                  {{ post.unit }}
+                </div>
+                <div class="col-3">
+                  {{ post.person }}
+                </div>
+                <div class="col-3">
+                  {{ post.location }}
+                </div>
+                <div class="col-1">
+                  {{ post.type_issued }}
+                </div>
+              </div>
+            <!-- <h2 class="article-title">{{ post.material_id }}</h2> -->
+            <!-- <p class="article-content">{{ post.person }}</p> -->
+            <!-- <p class="article-content">{{ post.location }}</p> -->
+            <!-- <p class="article-content">{{ post.type_issued }}</p> -->
+
         </div>
     </article>
     <!-- Modal -->
@@ -22,13 +44,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete post: {{ post.title }}</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Delete entry: {{ post.material_id }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete the post?
+                    Are you sure you want to delete the entry?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
