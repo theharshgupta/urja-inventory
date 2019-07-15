@@ -66,3 +66,4 @@ class SortDays(FlaskForm):
                                                   ('7', '7'), ('30', '30'),
                                                   ('90', '90'), ('360', '360')])
     submit = SubmitField('Search')
+    

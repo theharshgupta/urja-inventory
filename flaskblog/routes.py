@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, abort, redirect, request
-from flaskblog.models import User, Post
+from flaskblog.models import User, Post, Stock
 import pygal
 from datetime import date, datetime
 from datetime import timedelta
@@ -201,3 +201,16 @@ def dashboard():
         return render_template('graphing.html',graph_data=graph_data)
     except Exception as e:
         print(str(e))
+
+
+@app.route("/stock", methods=['GET', 'POST'])
+@login_required
+def stock():
+    page = request.args.get('page', 1, type=int)
+    per_page=20
+    return render_template('stock.html',stock_data=Stock.query.paginate(page=page, per_page=per_page))
+
+
+# @app.route("stock", methods=['GET', 'POST'])
+# @login_required
+# def stock():

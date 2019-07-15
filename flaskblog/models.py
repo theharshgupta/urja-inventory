@@ -36,3 +36,19 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Inventory('{self.material_id}', '{self.date_posted}')"
+
+
+
+class Stock(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    material_type = db.Column(db.String(50))
+    teeth = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+    units = db.Column(db.Integer)
+    diameter_size = db.Column(db.Integer)
+    dp = db.Column(db.Integer)
+    pitch = db.Column(db.Integer)
+    module_value = db.Column(db.String(20))
+    storage_location = db.Column(db.String(100))
+    unique_id = db.Column(db.String(100))
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
