@@ -58,7 +58,7 @@ class PostForm(FlaskForm):
     person = SelectField('Person', choices=CHOICES_PERSON, validators=[DataRequired()])
     location = SelectField('Location/Machine', default='Delhi', choices=CHOICES_LOCATION)
     type_issued = SelectField('Type Issued', default='CONSUMED', choices=CHOICES_TYPE_ISSUED)
-    submit = SubmitField('Post')
+    submit = SubmitField('Submit')
 
 class SortDays(FlaskForm):
     # for some reason the value of tuples below has to be strings and not ints
@@ -66,4 +66,3 @@ class SortDays(FlaskForm):
                                                   ('7', '7'), ('30', '30'),
                                                   ('90', '90'), ('360', '360')])
     submit = SubmitField('Search')
-    

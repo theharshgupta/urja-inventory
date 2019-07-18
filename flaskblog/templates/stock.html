@@ -6,7 +6,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <!-- <th scope="col">#</th> -->
       <th scope="col">Material</th>
       <th scope="col">Teeth</th>
       <th scope="col">Qty</th>
@@ -17,16 +17,14 @@
       <th scope="col">Module</th>
       <th scope="col">Storage</th>
       <th scope="col">ID</th>
-      <th scope="col">Date Posted</th>
-
-
-
+      <th scope="col">Date</th>
     </tr>
   </thead>
+
   <tbody>
     {% for item in stock_data.items %}
     <tr>
-      <th scope="row">{{item.id}}</th>
+      <!-- <th scope="row">{{item.id}}</th> -->
       <td>{{item.material_type}}</td>
       <td>{{item.teeth}}</td>
       <td>{{item.quantity}}</td>
@@ -47,9 +45,9 @@
 {% for page_num in stock_data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
   {% if page_num %}
     {% if stock_data.page == page_num %}
-      <a class="btn btn-info mb-4" href="{{ url_for('stock', page=page_num) }}">{{page_num}}</a>
+      <a class="btn btn-dark mb-4" href="{{ url_for('stock', page=page_num) }}">{{page_num}}</a>
     {% else %}
-      <a class="btn btn-outline-info mb-4" href="{{ url_for('stock', page=page_num) }}">{{page_num}}</a>
+      <a class="btn btn-outline-dark mb-4" href="{{ url_for('stock', page=page_num) }}">{{page_num}}</a>
     {% endif %}
   {% else %}
     ...

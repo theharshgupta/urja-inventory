@@ -16,6 +16,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
+    is_empty=False
     page = request.args.get('page', 1, type=int)
     per_page=20
     form = SortDays()
@@ -25,7 +26,7 @@ def home():
     if form.sort_days.data == '1':
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=1)))
     elif form.sort_days.data == '7':
-        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(hours=5)))
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(hours=7)))
     elif form.sort_days.data == '30':
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=30)))
     elif form.sort_days.data == '90':
@@ -34,8 +35,14 @@ def home():
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=360)))
     elif form.sort_days.data == 'All':
         posts = Post.query.order_by(desc(Post.date_posted))
+    # This is to check if the there are no posts, then we can put a message
+    # on the screen saying that there are no posts for the available dates
+    if len(posts.all()) == 0:
+        is_empty = True
 
-    return render_template('home.html', form=form, posts=posts.paginate(page=page, per_page=per_page))
+    return render_template('home.html', form=form,
+                            posts=posts.paginate(page=page, per_page=per_page),
+                            is_empty=is_empty)
 
 @app.route("/about")
 def about():
