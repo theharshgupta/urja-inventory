@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User
 from flask_login import current_user
@@ -66,3 +66,7 @@ class SortDays(FlaskForm):
                                                   ('7', '7'), ('30', '30'),
                                                   ('90', '90'), ('360', '360')])
     submit = SubmitField('Search')
+
+class Search(FlaskForm):
+    search_query = StringField('Search', validators=[DataRequired()])
+    submit = SubmitField('Search 2')

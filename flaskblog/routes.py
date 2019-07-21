@@ -7,19 +7,22 @@ import secrets
 from PIL import Image
 import os
 from sqlalchemy import desc
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays, Search
 from flaskblog import app, db, bcrypt
+import flask_sqlalchemy
 from flask_login import login_user, current_user, logout_user, login_required
-
-
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     is_empty=False
     page = request.args.get('page', 1, type=int)
+    num_posts = min(request.args.get('limit', 10), 50)
+    query = request.args.get('q', '')
+
     per_page=20
     form = SortDays()
+    search_form = Search()
 
     posts = Post.query.order_by(desc(Post.date_posted))
 
@@ -35,12 +38,14 @@ def home():
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=360)))
     elif form.sort_days.data == 'All':
         posts = Post.query.order_by(desc(Post.date_posted))
+
+
     # This is to check if the there are no posts, then we can put a message
     # on the screen saying that there are no posts for the available dates
     if len(posts.all()) == 0:
         is_empty = True
 
-    return render_template('home.html', form=form,
+    return render_template('home.html', form=form, search_form=search_form,
                             posts=posts.paginate(page=page, per_page=per_page),
                             is_empty=is_empty)
 

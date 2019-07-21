@@ -23,6 +23,29 @@
         </div>
 </form>
 
+<!-- search query form -->
+<form method="POST" action="">
+        <div class="form-group">
+            {{ search_form.search_query.label(class="form-control-label")}}
+            {% if search_form.search_query.errors %}
+                {{ search_form.search_query(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in search_form.search_query.errors %}
+                    <span>
+                    {{ error }}
+                    </span>
+                    {% endfor %}
+                </div>
+            {% else %}
+            {{ search_form.search_query(class="form-control-sm") }}
+            {% endif %}
+
+            <div class="btn">
+              {{ search_form.submit(class="btn btn-outline-info") }}
+            </div>
+        </div>
+</form>
+
 <!-- DISPLAY POSTS -->
 {% for post in posts.items %}
   <article class="media content-section">

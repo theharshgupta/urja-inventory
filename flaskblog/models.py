@@ -2,6 +2,7 @@ from flaskblog import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -37,7 +38,8 @@ class Post(db.Model):
     def __repr__(self):
         return f"Inventory('{self.material_id}', '{self.date_posted}')"
 
-
+if enable_search:
+    whooshalchemy.whoosh_index(app, Post)
 
 class Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
