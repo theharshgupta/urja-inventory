@@ -38,9 +38,6 @@ class Post(db.Model):
     def __repr__(self):
         return f"Inventory('{self.material_id}', '{self.date_posted}')"
 
-if enable_search:
-    whooshalchemy.whoosh_index(app, Post)
-
 class Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     material_type = db.Column(db.String(50))

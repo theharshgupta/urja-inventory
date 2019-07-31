@@ -70,3 +70,7 @@ class SortDays(FlaskForm):
 class Search(FlaskForm):
     search_query = StringField('Search', validators=[DataRequired()])
     submit = SubmitField('Search 2')
+
+class UploadScan(FlaskForm):
+    picture = FileField('Upload QR/Barcode', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Upload')

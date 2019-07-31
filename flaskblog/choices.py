@@ -1,4 +1,4 @@
-from pandas import read_csv
+# from pandas import read_csv
 CHOICES_TYPE_ISSUED = [('PERMANENT-MACHINE', 'PERMANENT-MACHINE'),
                        ('PERMANENT-PERSON', 'PERMANENT-PERSON'),
                        ('TEMPORARY', 'TEMPORARY'), ('CONSUMED', 'CONSUMED'),

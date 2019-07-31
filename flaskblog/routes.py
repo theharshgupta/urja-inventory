@@ -5,12 +5,16 @@ from datetime import date, datetime
 from datetime import timedelta
 import secrets
 from PIL import Image
+from pyzbar import pyzbar
+import cv2
 import os
 from sqlalchemy import desc
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays, Search
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays, Search, UploadScan
 from flaskblog import app, db, bcrypt
 import flask_sqlalchemy
+from werkzeug.utils import secure_filename
 from flask_login import login_user, current_user, logout_user, login_required
+
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
@@ -105,7 +109,6 @@ def save_picture(form_picture):
     i.save(picture_path)
 
     return picture_filename
-
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -221,6 +224,87 @@ def stock():
     page = request.args.get('page', 1, type=int)
     per_page=20
     return render_template('stock.html',stock_data=Stock.query.paginate(page=page, per_page=per_page))
+
+
+def save_barcode(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, file_ext = os.path.splitext(form_picture.filename)
+    picture_filename = random_hex + file_ext
+    picture_path = os.path.join(app.root_path, 'static/barcodes', picture_filename)
+    # output_size = (1000, 1000)
+    i = Image.open(form_picture)
+    # i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_path
+
+
+def extract_barcode(barcode_path):
+
+    # image = cv2.imread(args["image"])
+
+    print ('the path to the barcode: ', barcode_path)
+    image = cv2.imread(barcode_path)
+    barcodes = pyzbar.decode(image)
+    list_barcode_data = []
+
+    # loop over the detected barcodes
+
+    for (itr, barcode) in enumerate(barcodes):
+
+        # extract the bounding box location of the barcode and draw the
+        # bounding box surrounding the barcode on the image
+
+        (x, y, w, h) = barcode.rect
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+        # the barcode data is a bytes object so if we want to draw it on
+        # our output image we need to convert it to a string first
+
+        barcodeData = barcode.data.decode('utf-8')
+        barcodeType = barcode.type
+
+        # draw the barcode data and barcode type on the image
+
+        text = '{} ({})'.format(barcodeData, barcodeType)
+        cv2.putText(
+            image,
+            text,
+            (x, y - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (0, 0, 255),
+            2,
+            )
+
+        # print the barcode type and data to the terminal
+
+        # print(f"[INFO] Found {barcodeType} barcode: {barcodeData}")
+
+        barcode_data = {'id': itr+1, 'type': barcodeType,
+                        'data': barcodeData}
+
+        list_barcode_data.append(barcode_data)
+
+    return list_barcode_data
+
+
+
+
+@app.route('/scan', methods=['GET', 'POST'])
+@login_required
+def scan():
+    form = UploadScan()
+    if form.validate_on_submit():
+        if form.picture.data:
+            barcode_path = save_barcode(form_picture=form.picture.data)
+            barcode_data = extract_barcode(barcode_path)
+            # if len(barcode_data) > 0:
+                # for barcode_datum in barcode_data:
+                    # print(barcode_datum['data'])
+
+
+    return render_template('scan.html', title='Scan', form=form, barcode_data=barcode_data)
 
 
 # @app.route("stock", methods=['GET', 'POST'])
