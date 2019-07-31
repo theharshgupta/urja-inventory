@@ -1,7 +1,8 @@
 from flask import render_template, url_for, flash, abort, redirect, request
 from flaskblog.models import User, Post, Stock
 import pygal
-from datetime import date, datetime
+from datetime import date
+import datetime
 from datetime import timedelta
 import secrets
 from PIL import Image
@@ -18,6 +19,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
+@login_required
 def home():
     is_empty=False
     page = request.args.get('page', 1, type=int)
@@ -267,24 +269,28 @@ def extract_barcode(barcode_path):
         # draw the barcode data and barcode type on the image
 
         text = '{} ({})'.format(barcodeData, barcodeType)
-        cv2.putText(
-            image,
-            text,
-            (x, y - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.5,
-            (0, 0, 255),
-            2,
-            )
+        # cv2.putText(
+        #     image,
+        #     text,
+        #     (x, y - 10),
+        #     cv2.FONT_HERSHEY_SIMPLEX,
+        #     0.5,
+        #     (0, 0, 255),
+        #     2,
+        #     )
 
         # print the barcode type and data to the terminal
 
         # print(f"[INFO] Found {barcodeType} barcode: {barcodeData}")
 
         barcode_data = {'id': itr+1, 'type': barcodeType,
-                        'data': barcodeData}
+                        'data': barcodeData, "timestamp": str(datetime.datetime.now())}
 
         list_barcode_data.append(barcode_data)
+    try:
+        os.remove(barcode_path)
+    except:
+        print("Trying to delete Barcode image that does not exist. ")
 
     return list_barcode_data
 
@@ -294,14 +300,15 @@ def extract_barcode(barcode_path):
 @app.route('/scan', methods=['GET', 'POST'])
 @login_required
 def scan():
+    barcode_data = None
     form = UploadScan()
     if form.validate_on_submit():
         if form.picture.data:
             barcode_path = save_barcode(form_picture=form.picture.data)
             barcode_data = extract_barcode(barcode_path)
-            # if len(barcode_data) > 0:
-                # for barcode_datum in barcode_data:
-                    # print(barcode_datum['data'])
+            print(barcode_data)
+            if len(barcode_data) == 0:
+                barcode_data = None
 
 
     return render_template('scan.html', title='Scan', form=form, barcode_data=barcode_data)
