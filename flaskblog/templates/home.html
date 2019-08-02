@@ -23,6 +23,46 @@
         </div>
 </form>
 
+<!-- Scan form -->
+
+<div class="content-section btn-outline">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form_barcode.hidden_tag() }}
+        <fieldset class="form-group input-group">
+            <div class="form-group">
+                {{ form_barcode.picture.label() }}
+                {{ form_barcode.picture(class="form-control-file input-group") }}
+                {% if form_barcode.picture.errors %}
+                    {% for error in form_barcode.picture.errors %}
+                        <span class="text-danger"> {{ error }} </span>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+            {{ form_barcode.submit(class="btn btn-outline-info") }}
+
+        </fieldset>
+        <!-- <div class="form-group"> -->
+
+        <!-- </div> -->
+    </form>
+</div>
+
+{% if barcode_data %}
+<div class="content-section bg-success">
+    {% for barcode_datum in barcode_data %}
+      <h6 class="text-white"> {{ barcode_datum.id }} </h6>
+      <h6 class="text-white"> {{ barcode_datum.type }} </h6>
+      <h6 class="text-white"> {{ barcode_datum.data }} </h6>
+      <h6 class="text-white"> {{ barcode_datum.timestamp }} </h6>
+
+
+    {% endfor %}
+</div>
+{% endif %}
+
+
+
 
 <!-- search query form -->
 <!-- <form method="POST" action="">
@@ -46,6 +86,9 @@
             </div>
         </div>
 </form> -->
+
+
+
 
 <!-- DISPLAY POSTS -->
 {% for post in posts.items %}

@@ -72,5 +72,5 @@ class Search(FlaskForm):
     submit = SubmitField('Search 2')
 
 class UploadScan(FlaskForm):
-    picture = FileField('Upload QR/Barcode', validators=[FileAllowed(['jpg', 'png'])])
-    submit = SubmitField('Upload')
+    picture = FileField('SCAN QR CODE', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    submit = SubmitField('UPLOAD')

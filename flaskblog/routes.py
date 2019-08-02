@@ -1,8 +1,7 @@
 from flask import render_template, url_for, flash, abort, redirect, request
 from flaskblog.models import User, Post, Stock
 import pygal
-from datetime import date
-import datetime
+from datetime import date, datetime
 from datetime import timedelta
 import secrets
 from PIL import Image
@@ -51,9 +50,21 @@ def home():
     if len(posts.all()) == 0:
         is_empty = True
 
+    barcode_data = None
+    form_barcode = UploadScan()
+    if form_barcode.validate_on_submit():
+        if form_barcode.picture.data:
+            barcode_path = save_barcode(form_picture=form_barcode.picture.data)
+            barcode_data = extract_barcode(barcode_path)
+            print(barcode_data)
+            if len(barcode_data) == 0:
+                barcode_data = None
+
+
     return render_template('home.html', form=form, search_form=search_form,
                             posts=posts.paginate(page=page, per_page=per_page),
-                            is_empty=is_empty)
+                            is_empty=is_empty, form_barcode=form_barcode,
+                            barcode_data=barcode_data)
 
 @app.route("/about")
 def about():
@@ -284,7 +295,7 @@ def extract_barcode(barcode_path):
         # print(f"[INFO] Found {barcodeType} barcode: {barcodeData}")
 
         barcode_data = {'id': itr+1, 'type': barcodeType,
-                        'data': barcodeData, "timestamp": str(datetime.datetime.now())}
+                        'data': barcodeData, "timestamp": str(datetime.now())}
 
         list_barcode_data.append(barcode_data)
     try:
@@ -293,25 +304,6 @@ def extract_barcode(barcode_path):
         print("Trying to delete Barcode image that does not exist. ")
 
     return list_barcode_data
-
-
-
-
-@app.route('/scan', methods=['GET', 'POST'])
-@login_required
-def scan():
-    barcode_data = None
-    form = UploadScan()
-    if form.validate_on_submit():
-        if form.picture.data:
-            barcode_path = save_barcode(form_picture=form.picture.data)
-            barcode_data = extract_barcode(barcode_path)
-            print(barcode_data)
-            if len(barcode_data) == 0:
-                barcode_data = None
-
-
-    return render_template('scan.html', title='Scan', form=form, barcode_data=barcode_data)
 
 
 # @app.route("stock", methods=['GET', 'POST'])
