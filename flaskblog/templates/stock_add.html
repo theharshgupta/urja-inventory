@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">
+                    {{ legend }}
+                </legend>
+                <!-- Material ID -->
+                <div class="form-group">
+                    {{ form.material.label(class="form-control-label") }}
+                    {% if form.material.errors %}
+                        {{ form.material(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.material.errors %}
+                                <span>
+                            {{ error }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.material(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                </div>
+                <!-- Person -->
+                <div class="form-group">
+                    {{ form.person.label(class="form-control-label") }}
+                    {% if form.person.errors %}
+                        {{ form.person(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.person.errors %}
+                                <span>
+                                {{ error }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.person(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- Numbers Issued -->
+                <div class="form-group">
+                    {{ form.numbers_issued.label(class="form-control-label") }}
+                    {% if form.numbers_issued.errors %}
+                        {{ form.numbers_issued(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.numbers_issued.errors %}
+                                <span>
+                                {{ error }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.numbers_issued(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- Unit -->
+                <div class="form-group">
+                    {{ form.unit.label(class="form-control-label") }}
+                    {% if form.unit.errors %}
+                        {{ form.unit(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.unit.errors %}
+                                <span>
+                                {{ error }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.unit(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                    {{ form.location.label(class="form-control-label") }}
+                    {% if form.location.errors %}
+                        {{ form.location(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.location.errors %}
+                                <span>
+                                {{ error }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.location(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- Type Issued -->
+                <div class="form-group">
+                    {{ form.type_issued.label(class="form-control-label") }}
+                    {% if form.type_issued.errors %}
+                        {{ form.type_issued(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.type_issued.choices.errors %}
+                                <span>
+                                {{ error }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.type_issued(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
