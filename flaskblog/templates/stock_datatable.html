@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/datatables.min.js"></script>
+    <script>
+      $(document).ready( function () {
+          $('#example').DataTable();
+      } );
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css'>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
+    <link rel="shortcut icon"  href="{{ url_for('static', filename='favicon.ico') }}">
+
+
+
+    {% if title %}
+        <title> {{ title }} </title>
+    {% else %}
+        <title>Urjatech Inventory</title>
+    {% endif %}
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand mr-4 font-weight-bold" href="/">Urjatech Inventory</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav mr-auto">
+                    <!-- <a class="nav-item nav-link" href="{{ url_for('home')}}">Home</a> -->
+                    <!-- <a class="nav-item nav-link" href="{{ url_for('about')}}">About</a> -->
+                    {% if current_user.is_authenticated %}
+                      <a class="nav-item nav-link" href="{{ url_for('stock')}}">Stock</a>
+                    {% endif %}
+                </div>
+                <!-- Navbar Right Side -->
+                <div class="navbar-nav">
+                    {% if current_user.is_authenticated %}
+                      {% if current_user.username == 'harsh' %}
+                        <a class="nav-item nav-link" href="{{ url_for('dashboard')}}">Dashboard</a>
+                      {% endif %}
+                      <a class="nav-item nav-link" href="{{ url_for('new_post')}}">New Entry</a>
+                      <a class="nav-item nav-link" href="{{ url_for('account')}}">Account</a>
+                      <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
+                    {% else %}
+                        <a class="nav-item nav-link" href="{{ url_for('login')}}">Login</a>
+                        <a class="nav-item nav-link" href="{{ url_for('register')}}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+
+              <table id="example" class="display">
+                <thead>
+                  <tr>
+                    <!-- <th scope="col">#</th> -->
+                    <th class="sort" data-sort="material_type" scope="col">Material</th>
+                    <th scope="col">Teeth</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Dia</th>
+                    <th scope="col">DP</th>
+                    <th scope="col">Pitch</th>
+                    <th scope="col">Module</th>
+                    <th scope="col">Storage</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Date</th>
+                  </tr>
+                </thead>
+
+                <tbody class="list">
+                  {% for item in stock_data %}
+                  <tr>
+                    <!-- <th scope="row">{{item.id}}</th> -->
+                    <td class="material_type">{{item.material_type}}</td>
+                    <td class="teeth">{{item.teeth}}</td>
+                    <td class="quantity">{{item.quantity}}</td>
+                    <td class="units">{{item.units}}</td>
+                    <td class="diameter_size">{{item.diameter_size}}</td>
+                    <td class="dp">{{item.dp}}</td>
+                    <td class="pitch">{{item.pitch}}</td>
+                    <td class="module_value">{{item.module_value}}</td>
+                    <td class="storage_location">{{item.storage_location}}</td>
+                    <td class="unique_id">{{item.unique_id}}</td>
+                    <td>{{item.date_posted.strftime("%d-%m-%Y")}}</td>
+
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+
+
+
+
+
+        </div>
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

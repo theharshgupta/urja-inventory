@@ -1,0 +1,110 @@
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>List.js with Multiple Filters, Search, and Pagination</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css'>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<!-- partial:index.partial.html -->
+<div class="container">
+	<div class="row">
+		<div id="users" class="col-xs-12">
+			<div class="filter-group row">
+				<div class="form-group col-xs-12 col-sm-12 col-md-4">
+					<input type="text" class="search form-control" placeholder="Search" />
+				</div>
+				<div class="form-group col-xs-12 col-sm-12 col-md-4">
+					<div class="radio-inline">
+						<label>
+							<input class="filter-all" type="radio" value="all" name="gender" id="gender-all" checked /> All
+						</label>
+					</div>
+					<div class="radio-inline">
+						<label>
+							<input class="filter" type="radio" value="female" name="gender" id="gender-female" /> Female
+						</label>
+					</div>
+					<div class="radio-inline">
+						<label>
+							<input class="filter" type="radio" value="male" name="gender" id="gender-male" /> Male
+						</label>
+					</div>
+				</div>
+				<div class="form-group col-xs-12 col-sm-12 col-md-4">
+					<div class="radio-inline">
+						<label>
+							<input class="filter" type="radio" value="Blvd" name="address" id="address-all" /> Boulevard
+						</label>
+					</div>
+					<div class="radio-inline">
+						<label>
+							<input class="filter" type="radio" value="St" name="address" id="address-street" /> Street
+						</label>
+					</div>
+					<div class="radio-inline">
+						<label>
+							<input class="filter" type="radio" value="drawing" name="address" id="address-drive" /> Drawing
+						</label>
+					</div>
+				</div>
+				<div class="form-group col-xs-12 col-sm-12">
+					<button class="btn btn-danger" onclick="resetList();">Clear</button>
+				</div>
+			</div>
+
+			<ul class="list">
+        {% for item in stock_data %}
+				<li class="list--list-item" data-gender="male">
+					<h3 class="name">{{item.unique_id}}</h3>
+					<p class="born">{{item.units}}</p>
+					<!-- <p class="address">{{item.teeth}}</p> -->
+          <!-- <p class="address">{{item.unique_id}}</p> -->
+          <p class="address">{{item.storage_location}}</p>
+
+
+				</li>
+        {% endfor %}
+				<li class="list--list-item" data-gender="male">
+					<h3 class="name">Jonas</h3>
+					<p class="born">1985</p>
+					<p class="address">3 Main N Ave.</p>
+				</li>
+				<li class="list--list-item" data-gender="male">
+					<h3 class="name">Jonas</h3>
+					<p class="born">1985</p>
+					<p class="address">123 Main St.</p>
+				</li>
+				<li class="list--list-item" data-gender="male">
+					<h3 class="name">Jonas</h3>
+					<p class="born">1985</p>
+					<p class="address">953 Lake Square</p>
+				</li>
+				<li class="list--list-item" data-gender="female">
+					<h3 class="name">Martina</h3>
+					<p class="born">1986</p>
+					<p class="address">1313 Deadend Dr</p>
+				</li>
+				<li class="list--list-item" data-gender="male">
+					<h3 class="name">Gustaf</h3>
+					<p class="born">1983</p>
+					<p class="address">24 Busch Blvd</p>
+				</li>
+			</ul>
+			<div class="no-result">No Results</div>
+			<ul class="pagination"></ul>
+		</div>
+	</div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<!-- partial -->
+  <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/list.pagination.js/0.1.1/list.pagination.js'></script>
+<script  src="{{url_for('static', filename='script.js')}}"></script>
+
+</body>
+</html>

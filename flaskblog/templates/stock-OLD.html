@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+
+
+<!-- DISPLAY POSTS -->
+
+<div id="payload">
+  <input class="search mb-3 input-group" placeholder="Search">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <!-- <th scope="col">#</th> -->
+        <th class="sort" data-sort="material_type" scope="col">Material</th>
+        <th scope="col">Teeth</th>
+        <th scope="col">Qty</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Dia</th>
+        <th scope="col">DP</th>
+        <th scope="col">Pitch</th>
+        <th scope="col">Module</th>
+        <th scope="col">Storage</th>
+        <th scope="col">ID</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+
+    <tbody class="list">
+      {% for item in stock_data %}
+      <tr>
+        <!-- <th scope="row">{{item.id}}</th> -->
+        <td class="material_type">{{item.material_type}}</td>
+        <td class="teeth">{{item.teeth}}</td>
+        <td class="quantity">{{item.quantity}}</td>
+        <td class="units">{{item.units}}</td>
+        <td class="diameter_size">{{item.diameter_size}}</td>
+        <td class="dp">{{item.dp}}</td>
+        <td class="pitch">{{item.pitch}}</td>
+        <td class="module_value">{{item.module_value}}</td>
+        <td class="storage_location">{{item.storage_location}}</td>
+        <td class="unique_id">{{item.unique_id}}</td>
+        <td>{{item.date_posted.strftime("%d-%m-%Y")}}</td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  var options = {valueNames: ['material_type', 'teeth', 'quantity',
+                              'units', 'diameter_size', 'storage_location'],
+                 pagination: true
+                };
+  var hackerList = new List('payload', options);
+</script>
+
+<!-- {% for page_num in stock_data.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %} -->
+<!-- {% if page_num %} -->
+<!-- {% if stock_data.page == page_num %} -->
+<!-- <a class="btn btn-dark mb-4" href="{{ url_for('stock', page=page_num) }}">{{page_num}}</a> -->
+<!-- {% else %} -->
+<!-- <a class="btn btn-outline-dark mb-4" href="{{ url_for('stock', page=page_num) }}">{{page_num}}</a> -->
+<!-- {% endif %} -->
+<!-- {% else %} -->
+<!-- ... -->
+<!-- {% endif %} -->
+<!-- {% endfor %} -->
+
+
+
+{% endblock content %}
