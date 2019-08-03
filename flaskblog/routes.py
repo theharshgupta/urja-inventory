@@ -234,9 +234,10 @@ def dashboard():
 @app.route("/stock", methods=['GET', 'POST'])
 @login_required
 def stock():
-    page = request.args.get('page', 1, type=int)
-    per_page=20
-    return render_template('stock.html',stock_data=Stock.query.paginate(page=page, per_page=per_page))
+    # page = request.args.get('page', 1, type=int)
+    # per_page=100
+    # return render_template('stock.html',stock_data=Stock.query.paginate(page=page, per_page=per_page))
+    return render_template('stock_datatable.html',stock_data=Stock.query.all())
 
 
 def save_barcode(form_picture):
