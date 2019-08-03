@@ -74,3 +74,16 @@ class Search(FlaskForm):
 class UploadScan(FlaskForm):
     picture = FileField('SCAN QR CODE', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('UPLOAD')
+
+class AddStock(FlaskForm):
+        material = StringField('Material', validators=[DataRequired()])
+        teeth = StringField('Teeth', validators=[DataRequired()])
+        quantity = IntegerField('Quantity', default=1, validators=[DataRequired()])
+        unit = SelectField('Unit', default='pcs', choices=[(x, x) for x in CHOICES_UNIT])
+        diameter_size = StringField('Diameter', validators=[DataRequired()])
+        dp = StringField('DP', validators=[DataRequired()])
+        pitch = StringField('Pitch', validators=[DataRequired()])
+        module_value = StringField('Module Value', validators=[DataRequired()])
+        location = SelectField('Location/Machine', choices=CHOICES_LOCATION)
+        unique_id = StringField('ID', validators=[DataRequired()])
+        submit = SubmitField('Submit')

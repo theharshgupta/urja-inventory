@@ -16,8 +16,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
     <link rel="shortcut icon"  href="{{ url_for('static', filename='favicon.ico') }}">
 
-
-
     {% if title %}
         <title> {{ title }} </title>
     {% else %}
@@ -44,9 +42,9 @@
                 <div class="navbar-nav">
                     {% if current_user.is_authenticated %}
                       {% if current_user.username == 'harsh' %}
-                        <a class="nav-item nav-link" href="{{ url_for('dashboard')}}">Dashboard</a>
+                        <!-- <a class="nav-item nav-link" href="{{ url_for('dashboard')}}">Dashboard</a> -->
                       {% endif %}
-                      <a class="nav-item nav-link" href="{{ url_for('new_post')}}">New Entry</a>
+                      <a class="nav-item nav-link" href="{{ url_for('new_post')}}">Issue</a>
                       <a class="nav-item nav-link" href="{{ url_for('account')}}">Account</a>
                       <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
                     {% else %}
@@ -58,8 +56,9 @@
         </div>
     </nav>
 </header>
-
 <main role="main" class="container">
+  <h3 class="mb-3">Current Stock</h3>
+  <a href="{{url_for('stock_add')}}" class="btn btn-success mb-3 btn-sm active" role="button" aria-pressed="true">Add Stock</a>
     <div class="row">
         <div class="col-md-12">
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -87,7 +86,7 @@
                     <th scope="col">Module</th>
                     <th scope="col">Storage</th>
                     <th scope="col">ID</th>
-                    <th scope="col">Date</th>
+                    <!-- <th scope="col">Date</th> -->
                   </tr>
                 </thead>
 
@@ -105,7 +104,7 @@
                     <td class="module_value">{{item.module_value}}</td>
                     <td class="storage_location">{{item.storage_location}}</td>
                     <td class="unique_id">{{item.unique_id}}</td>
-                    <td>{{item.date_posted.strftime("%d-%m-%Y")}}</td>
+                    <!-- <td>{{item.date_posted.strftime("%d-%m-%Y")}}</td> -->
 
                   </tr>
                   {% endfor %}

@@ -35,9 +35,9 @@
                 <div class="navbar-nav">
                     {% if current_user.is_authenticated %}
                       {% if current_user.username == 'harsh' %}
-                        <a class="nav-item nav-link" href="{{ url_for('dashboard')}}">Dashboard</a>
+                        <!-- <a class="nav-item nav-link" href="{{ url_for('dashboard')}}">Dashboard</a> -->
                       {% endif %}
-                      <a class="nav-item nav-link" href="{{ url_for('new_post')}}">New Entry</a>
+                      <a class="nav-item nav-link" href="{{ url_for('new_post')}}">Issue</a>
                       <a class="nav-item nav-link" href="{{ url_for('account')}}">Account</a>
                       <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
                     {% else %}

@@ -4,6 +4,7 @@ from datetime import timedelta, date, datetime
 from sqlalchemy import desc
 import pandas as pd
 
+
 # posts = Post.query.order_by(desc(Post.date_posted))
 # posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(hours=5))).all()
 
@@ -17,6 +18,7 @@ def create_table():
     from sqlalchemy import Table
     from sqlalchemy import Column
     from sqlalchemy import Integer, String
+
 
     db_uri = 'sqlite:///flaskblog/site.db'
     engine = create_engine(db_uri)
@@ -42,21 +44,24 @@ def create_table():
 
 
 def fill_stock():
+    Stock.query.delete()
+
     # To test if the user is being added or not
     df = pd.read_csv('csvs/stock.csv')
     # print(df.head(10).to_string())
     df.drop(df.columns[-1], inplace=True, axis=1)
     for row in df.values.tolist():
         entry = Stock(material_type=row[0],
-        teeth=row[1],
-        quantity=row[2],
-        units=row[3],
-        diameter_size=row[4],
-        dp=row[5],
-        pitch=row[6],
-        module_value=row[7],
-        storage_location=row[8],
-        unique_id=row[-1])
+                        teeth=row[1],
+                        quantity=row[2],
+                        units=row[3],
+                        diameter_size=row[4],
+                        dp=row[5],
+                        pitch=row[6],
+                        module_value=row[7],
+                        storage_location=row[8],
+                        unique_id=row[-1])
+
         db.session.add(entry)
         db.session.commit()
 

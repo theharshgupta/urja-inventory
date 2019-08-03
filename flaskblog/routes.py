@@ -9,7 +9,7 @@ from pyzbar import pyzbar
 import cv2
 import os
 from sqlalchemy import desc
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays, Search, UploadScan
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SortDays, Search, UploadScan, AddStock
 from flaskblog import app, db, bcrypt
 import flask_sqlalchemy
 from werkzeug.utils import secure_filename
@@ -160,8 +160,8 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Entry', form=form,
-                            legend='New Entry')
+    return render_template('create_post.html', title='Issue', form=form,
+                            legend='New Issue')
 
 
 @app.route("/post/<int:post_id>")
@@ -237,7 +237,31 @@ def stock():
     # page = request.args.get('page', 1, type=int)
     # per_page=100
     # return render_template('stock.html',stock_data=Stock.query.paginate(page=page, per_page=per_page))
+
     return render_template('stock_datatable.html',stock_data=Stock.query.all())
+
+@app.route("/stock_add", methods=['GET', 'POST'])
+@login_required
+def stock_add():
+    form = AddStock()
+    if form.validate_on_submit():
+        entry = Stock(material_type=form.material.data,
+                        teeth=form.teeth.data,
+                        quantity=form.quantity.data,
+                        units=form.unit.data,
+                        diameter_size=form.diameter_size.data,
+                        dp=form.dp.data,
+                        pitch=form.pitch.data,
+                        module_value=form.module_value.data,
+                        storage_location=form.location.data,
+                        unique_id=form.unique_id.data)
+
+        db.session.add(entry)
+        db.session.commit()
+        flash('Your stock has been added!', 'success')
+        return redirect(url_for('stock'))
+    return render_template('stock_add.html', title='Issue', form=form,
+                            legend='New Issue')
 
 
 def save_barcode(form_picture):
