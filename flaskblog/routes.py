@@ -34,7 +34,7 @@ def home():
     if form.sort_days.data == '1':
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=1)))
     elif form.sort_days.data == '7':
-        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(hours=7)))
+        posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=7)))
     elif form.sort_days.data == '30':
         posts = Post.query.order_by(desc(Post.date_posted)).filter(Post.date_posted > (datetime.now()-timedelta(days=30)))
     elif form.sort_days.data == '90':
@@ -156,9 +156,19 @@ def new_post():
                     location=form.location.data,
                     type_issued=form.type_issued.data,
                     author=current_user)
+        unique_id = form.material_id.data
         db.session.add(post)
+        item = Stock.query.filter_by(unique_id=unique_id).first()
+        print("Quantity issued:",form.numbers_issued.data)
+        print(f"Quantity for the selected item {unique_id} BEFORE update:", item.quantity)
+        if item.quantity - form.numbers_issued.data < 0:
+            flash("You have issued more than in Current Stock!", "danger")
+        item.quantity = item.quantity - form.numbers_issued.data
+        item.date_posted = datetime.now()
+        print(f"Quantity for the selected item {unique_id} AFTER update:", item.quantity)
         db.session.commit()
-        flash('Your post has been created!', 'success')
+
+        flash('Item has been issued!', 'success')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='Issue', form=form,
                             legend='New Issue')
@@ -217,18 +227,16 @@ def delete_post(post_id):
 @app.route("/dashboard", methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    try:
-        pie_chart = pygal.Pie()
-        pie_chart.title = 'Browser usage in February 2012 (in %)'
-        pie_chart.add('IE', 19.5)
-        pie_chart.add('Firefox', 36.6)
-        pie_chart.add('Chrome', 36.3)
-        pie_chart.add('Safari', 4.5)
-        pie_chart.add('Opera', 2.3)
-        graph_data = pie_chart.render_data_uri()
-        return render_template('graphing.html',graph_data=graph_data)
-    except Exception as e:
-        print(str(e))
+    pie_chart = pygal.Pie()
+    pie_chart.title = 'Browser usage in February 2012 (in %)'
+    pie_chart.add('IE', 19.5)
+    pie_chart.add('Firefox', 36.6)
+    pie_chart.add('Chrome', 36.3)
+    pie_chart.add('Safari', 4.5)
+    pie_chart.add('Opera', 2.3)
+    graph_data = pie_chart.render_data_uri()
+    return render_template('graphing.html',graph_data=graph_data)
+
 
 
 @app.route("/stock", methods=['GET', 'POST'])

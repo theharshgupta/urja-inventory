@@ -4,6 +4,8 @@ from datetime import timedelta, date, datetime
 from sqlalchemy import desc
 import pandas as pd
 
+Post.query.delete()
+db.session.commit()
 
 # posts = Post.query.order_by(desc(Post.date_posted))
 # posts = posts.filter(Post.date_posted > (datetime.now()-timedelta(hours=5))).all()
@@ -64,5 +66,3 @@ def fill_stock():
 
         db.session.add(entry)
         db.session.commit()
-
-fill_stock()
