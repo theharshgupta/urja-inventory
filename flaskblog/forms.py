@@ -75,6 +75,7 @@ class UploadScan(FlaskForm):
     picture = FileField('SCAN QR CODE', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('UPLOAD')
 
+
 class AddStock(FlaskForm):
         material = StringField('Material', validators=[DataRequired()])
         teeth = StringField('Teeth', validators=[DataRequired()])

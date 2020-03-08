@@ -34,9 +34,9 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
     def __repr__(self):
         return f"Inventory('{self.material_id}', '{self.date_posted}')"
+
 
 class Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
