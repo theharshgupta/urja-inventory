@@ -8,7 +8,7 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 numpy==1.17.0
-opencv-python==4.1.0.25
+opencv-python==4.1.1.26
 Pillow==6.1.0
 pycparser==2.19
 pygal==2.4.0
